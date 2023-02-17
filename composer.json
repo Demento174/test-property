@@ -1,0 +1,7 @@
+{
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
+        "symfony/var-dumper": "^5.4",
+        "laravie/parser": "^2.0"
+    }
+}

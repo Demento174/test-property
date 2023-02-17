@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        {% if children %}
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <nav class="navigation">
+                    {% for child in children %}
+                        <li>
+                            <a href="{{ child.get_link() }}" class="button button_blue_l_l">
+                                {{ child.get_title() }} ({{ child.get_count() }})
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                </nav>
+            </div>
+        {% endif %}
+
+
+        {% for item in items %}
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                {% include 'blocks/cart-preview/cart2.twig' %}
+            </div>
+        {% endfor %}
+
+
+{#        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">#}
+{#            <nav class="navigation pagination" aria-label="Записи">#}
+
+{#                <div class="nav-links">#}
+{#                    <span class="prev page-numbers" >< Previous</span>#}
+{#                    <span aria-current="page" class="page-numbers current">1</span>#}
+{#                    <a class="page-numbers" href="#">2</a>#}
+{#                    <span class="page-numbers dots">…</span>#}
+{#                    <a class="page-numbers" href="#">7</a>#}
+{#                    <a class="next page-numbers" href="#">Next ></a>#}
+{#                </div>#}
+{#            </nav>#}
+{#        </div>#}
+        {{ pagination_render() }}
+    </div>
+</div>

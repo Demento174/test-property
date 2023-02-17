@@ -1,0 +1,15 @@
+<?php
+    return
+        [
+            'api'=>
+                [
+                    'token'=>'KGgSM9P2R9AO6rIzAYZhcP9RJUCOPYd5ZI09vaIT',
+                    'uri'=>'/wp-json/filebird/public/v1',
+                ],
+            'plugin'=>'filebird/filebird.php',
+            'regex_product_image'=>'/^((.*)_)?/m',
+            'regex_thumbnail'=>'/^((.*)_([1-9]))?/m',
+            'regex_draw'=>'/^((.*)_([0]))?/m',
+            'folder'=>1,
+            'key_draw'=>'drawing'
+        ];

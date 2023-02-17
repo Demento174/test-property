@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <section class="carousel carousel_2">
+                <div class="top d-flex justify-content-between">
+                    <h3 class="title">{{ title }}</h3>
+                    <a href="{{ link.url }}" class="button button_opacity">{{ link.title }}</a>
+                </div>
+                <div class="owl-carousel owl-theme">
+                    {% for item in items %}
+                        {% include 'blocks/cart-preview/cart2.twig' %}
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

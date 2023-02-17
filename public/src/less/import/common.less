@@ -1,0 +1,23 @@
+ul,p{
+  padding: 0;
+  margin: 0;
+}
+.mob_none{
+  @media (min-width: @mobMin) and (max-width: @mobMax)  {
+    display: none;
+  }
+}
+.lap_none{
+  @media (min-width: @lapMin) and (max-width: @lapMax)  {
+    display: none;
+  }
+}
+.desc_none{
+  @media (min-width: @lapMax)  {
+    display: none;
+  }
+}
+
+button{
+  cursor: pointer;
+}

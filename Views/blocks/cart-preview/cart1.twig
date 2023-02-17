@@ -1,0 +1,4 @@
+<a href="{{ item.get_link() }}" class="cart cart_preview_1 {% if item.get_hot() %} hot {% endif %}">
+    <img src="{{ item.get_image.url }}" alt="{{ item.get_image.alt }}">
+    <span class="title">{{ item.get_title }}</span>
+</a>

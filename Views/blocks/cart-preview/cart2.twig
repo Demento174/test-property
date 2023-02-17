@@ -1,0 +1,49 @@
+<div  class="cart cart_preview_2 {% if item.get_hot() %}hot{% endif %} ">
+    <div class="image">
+        <img src="{{ item.get_image.url }}" alt="{{ item.get_image.alt }}">
+        <div class="bottom">
+            <a href="{{ item.get_termFirstLevel().get_link() }}" class="category category_1">{{ item.get_termFirstLevel().get_title() }}</a>
+            <a href="{{ item.get_termSecondLevel().get_link() }}" class="category category_2">{{ item.get_termSecondLevel().get_title() }}</a>
+        </div>
+    </div>
+    <div class="description">
+        <a href="{{ item.get_link() }}" class="title">{{ item.get_title() }}</a>
+        <span class="location">
+                    <img src="{{ public_dir()}}images/icons/map.svg" alt="">{{ item.get_address() }}
+                </span>
+        <span class="price">
+                    <span class="number">{{ item.get_price() }}</span>
+                    <span class="currency">AED</span>
+                </span>
+        <span class="attributes">
+                                <span class="item">
+                                    <div class="item_top">
+                                        <span class="value">{{ item.get_bads() }}</span>
+                                        <img src="{{ public_dir()}}images/icons/bed.svg" alt="">
+                                    </div>
+                                    <span class="item_bottom">
+                                        Bads
+                                    </span>
+                                </span>
+                                <span class="item">
+                                    <div class="item_top">
+                                        <span class="value">{{ item.get_baths() }}</span>
+                                        <img src="{{ public_dir()}}images/icons/bath.svg" alt="">
+                                    </div>
+                                    <span class="item_bottom">
+                                        Baths
+                                    </span>
+                                </span>
+                                <span class="item">
+                                    <div class="item_top">
+                                        <span class="value number">{{ item.get_square() }}</span>
+                                        <img src="{{ public_dir()}}images/icons/ruler.svg" alt="">
+                                    </div>
+                                    <span class="item_bottom">
+                                        Square (ft)
+                                    </span>
+                                </span>
+                            </span>
+    </div>
+
+</div>

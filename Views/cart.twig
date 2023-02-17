@@ -1,0 +1,103 @@
+<main class="cart_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
+                <div class="image">
+                    <img src="{{ image.url }}" alt="{{ image.alt }}">
+                    <div class="bottom">
+                        <a href="{{ categories.first.get_link() }}" class="category category_1">{{ categories.first.get_title() }}</a>
+                        <a href="{{ categories.second.get_link() }}" class="category category_2">{{ categories.second.get_title() }}</a>
+                    </div>
+                </div>
+                <div class="description">
+                    <h2 class="title">{{ title }}</h2>
+                    <div class="location">
+                        <img src="{{ public_dir() }}/images/icons/map.svg" alt="">
+                        {{ address }}
+                    </div>
+                    <div class="attributes">
+                                <span class="item">
+                                    <div class="item_top">
+                                        <span class="value">{{ bads }}</span>
+                                        <img src="{{ public_dir() }}/images/icons/bed.svg" alt="">
+                                    </div>
+                                    <span class="item_bottom">
+                                        Bads
+                                    </span>
+                                </span>
+                        <span class="item">
+                                    <div class="item_top">
+                                        <span class="value">{{ baths }}</span>
+                                        <img src="{{ public_dir() }}/images/icons/bath.svg" alt="">
+                                    </div>
+                                    <span class="item_bottom">
+                                        Baths
+                                    </span>
+                                </span>
+                        <span class="item">
+                                    <div class="item_top">
+                                        <span class="value number">{{ square }}</span>
+                                        <img src="{{ public_dir() }}/images/icons/ruler.svg" alt="">
+                                    </div>
+                                    <span class="item_bottom">
+                                        Square ({{ square_unity }})
+                                    </span>
+                                </span>
+                    </div>
+                    <div class="details">
+                        <div class="title">Project Details</div>
+                        <table>
+                            <tr>
+                                <td>Unit Reference</td>
+                                <td>{{ unit_reference }}</td>
+                            </tr>
+                            <tr>
+                                <td>Parking Slot</td>
+                                <td>{{ parking }}</td>
+                            </tr>
+                            <tr>
+                                <td>Property Name</td>
+                                <td>{{ title }}</td>
+                            </tr>
+                            <tr>
+                                <td>Permit Number</td>
+                                <td>{{ permit_number }}</td>
+                            </tr>
+                            <tr>
+                                <td>Addeed on</td>
+                                <td>{{ dateCreate }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                <div class="right">
+                    <div class="addition_information unit_reference">Unit Reference: <span>{{ unit_reference }}</span></div>
+                    <div class="price">
+                        <div class="main"><span class="number">{{ price }}</span> AED</div>
+                        <div class="additional"><span class="number">{{ currency.value }}</span> {{ currency.sign }}</div>
+                    </div>
+                    <button data-bs-target="#callback" data-bs-toggle="modal" class="button button_blue">Leave a Request</button>
+                </div>
+            </div>
+            {% if similar %}
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <section class="carousel carousel_2">
+                    <div class="top d-flex justify-content-between">
+                        <h3 class="title">Similar Property</h3>
+
+                    </div>
+                    <div class="owl-carousel owl-theme">
+                        {% for item in similar %}
+                        {% include 'blocks/cart-preview/cart2.twig' %}
+                        {% endfor %}
+
+                    </div>
+                </section>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
