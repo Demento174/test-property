@@ -38,3 +38,6 @@ function renderBlock(string $template,array|null $input = null,bool $debug=false
 }
 
 
+//add_action( 'created_taxonomy_property', 'wp_kama_created_taxonomy_action', 10, 3 );
+
+

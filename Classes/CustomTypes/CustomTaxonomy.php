@@ -1,6 +1,7 @@
 <?php
 namespace Classes\CustomTypes;
 
+use Classes\PostsAndTax\Taxonomy\TaxonomyProperty;
 use Classes\Traits\Settings;
 /**
  * Регистрация кастомных Таксономи
@@ -25,6 +26,8 @@ class CustomTaxonomy{
         add_filter('request', [$this,'handler_request'], 1, 1 );
         add_filter('term_link', [$this,'handler_term_link'], 10, 3 );
         add_action( 'init', [$this,'handler_init'] );
+        add_action( 'edited_taxonomy_property', [$this,'handler_edit'], 10, 3 );
+        add_action( 'created_taxonomy_property', [$this,'handler_create'], 10, 3 );
 
     }
 
@@ -98,6 +101,20 @@ class CustomTaxonomy{
                 'index.php?taxonomy_property=$matches[2]&paged=$matches[3]',
                 'top'
             );
+
+            // сделать дубликаты slug у дочерних категорий
+//            add_rewrite_rule(
+//                '^'.$slug.'/([^/]*)/([0-9]+)_([^/]*)/?$',
+//                'index.php?taxonomy_property=$matches[3]_$matches[4]',
+//                'top'
+//            );
+//
+//
+//            add_rewrite_rule(
+//                '^'.$slug.'/([^/]*)/([^/]*)/([0-9]+)_([^/]*)/?$',
+//                'index.php?taxonomy_property=$matches[3]_$matches[4]',
+//                'top'
+//            );
         }
     }
 
@@ -145,6 +162,7 @@ class CustomTaxonomy{
         endif;
 
 
+
         $term = get_term_by('slug', $name, $tax_name);
 
         if (isset($name) && $term && !is_wp_error($term)):
@@ -178,6 +196,16 @@ class CustomTaxonomy{
 
         endif;
 
+        if(key_exists("taxonomy_property",$query))
+
+            $query["taxonomy_property"] = TaxonomyProperty::get_query(
+                array_values(
+                    array_filter(
+                        explode('/',$_SERVER['REQUEST_URI']),
+                        fn($element)=>!empty($element)
+                    )
+                )
+            );
 
         return $query;
     }
@@ -193,6 +221,35 @@ class CustomTaxonomy{
         $url = str_replace('/' . $taxonomy_slug, '', $url);
 
         return $url;
+    }
+
+    public function handler_edit($term_id, $tt_id, $args )
+    {
+        $term = get_term($term_id);
+
+
+
+        if(false === strripos($term->slug,(string) $term->term_id))
+        {
+            wp_update_term($term_id,'taxonomy_property', ['slug'=>$term->term_id.'_'.$term->slug,] );
+
+        }
+
+        return $term_id;
+    }
+    public function handler_create( $term_id, $tt_id, $args)
+    {
+        $term = get_term($term_id);
+
+
+
+        if(false === strripos($term->slug,(string) $term->term_id))
+        {
+            wp_update_term($term_id,'taxonomy_property', ['slug'=>$term->term_id.'_'.$term->slug,] );
+
+        }
+
+        return $term_id;
     }
 
     public function handler()

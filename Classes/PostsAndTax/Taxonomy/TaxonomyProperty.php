@@ -2,6 +2,7 @@
 
 namespace Classes\PostsAndTax\Taxonomy;
 
+use Carbon\Exceptions\Exception;
 use Classes\PostsAndTax\Taxonomy\ATaxonomy;
 use Classes\PostsAndTax\Posts\PostProperty;
 
@@ -19,6 +20,47 @@ class TaxonomyProperty extends ATaxonomy
     {
         parent::__construct(self::$typeTaxonomy, $id);
         $this->count = $this->set_count();
+    }
+
+    protected function set_link(int $ID, $type):string
+    {
+        $link = parent::set_link($ID,$type);
+
+
+            $query_array = array_values(
+                array_filter(
+                    explode('/',parent::set_link($ID,$type)),
+                    fn($element)=>!empty($element)
+                )
+            );
+
+            unset($query_array[0]);//Удаляем http:
+            unset($query_array[1]);//Удаляем domain
+            // Если в запросе есть данные о странице
+
+            if($key_page=array_search('page',$query_array))
+            {
+                unset($query_array[$key_page++]);
+                unset($query_array[$key_page]);
+            }
+            $query_array = array_values($query_array);
+            if(1===count($query_array))
+                return parent::set_link($ID,$type);
+
+            $child_uri_array = explode('_',$query_array[1]);
+            $child = count($child_uri_array)>1?$child_uri_array[1]:$child_uri_array[0];
+
+            if(2===count($query_array))
+                return str_replace($query_array[1],$child,parent::set_link($ID,$type));
+
+            $child_child_uri_array = explode('_',$query_array[2]);
+
+            $child_child = count($child_child_uri_array)>1?$child_child_uri_array[1]:$child_child_uri_array[0];
+
+            return str_replace($query_array[2],$child_child,
+                str_replace($query_array[1],$child,parent::set_link($ID,$type))
+            );
+
     }
 
     private function set_count():int
@@ -52,7 +94,7 @@ class TaxonomyProperty extends ATaxonomy
     }
     public function get_link():string
     {
-     return get_term_link($this->id);
+        return $this->link;
     }
 
     public function get_count():int
@@ -104,5 +146,45 @@ class TaxonomyProperty extends ATaxonomy
         return $result;
     }
 
+    public static function get_query(array $query_array):string|Exception
+    {
+        // Если в запросе есть данные о странице
+        if($key_page=array_search('page',$query_array))
+        {
+            unset($query_array[$key_page++]);
+            unset($query_array[$key_page]);
+        }
 
+
+        // Если это главная таксономия (Buy или Rent)
+        if(1===count($query_array))
+            return $query_array[0];
+
+        $parent = new self(self::query()::term_by('slug',$query_array[0],self::$typeTaxonomy));
+        $child = null;
+
+        foreach ($parent->get_children() as $item)
+            if(stripos($item->slug,$query_array[1]) or 0 === stripos($item->slug,$query_array[1]))
+                $child = $item;
+
+        if(null===$child)
+            throw new \Exception($query_array[1].'(2 level) not found in main category');
+        // Если это дочерняя таксономия
+        if(2===count($query_array)):
+            return $child->slug;
+        elseif (3===count($query_array)):
+
+            $child_child = null;
+            foreach ($child->get_children() as $item)
+                if(stripos($item->slug,$query_array[2]) or 0 ===stripos($item->slug,$query_array[2]))
+                    $child_child = $item;
+            if(null===$child_child)
+                throw new \Exception($query_array[2].'(3 level) not found in main category');
+            return $child_child->slug;
+        endif;
+
+        throw new \Exception('wrong number of elements in taxonomy query TaxonomyProperty::get_query');
+
+
+    }
 }

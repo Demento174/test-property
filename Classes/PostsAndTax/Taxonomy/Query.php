@@ -84,6 +84,14 @@ class Query
         return get_categories( ['taxonomy'=>$taxonomy, 'hide_empty'=> true,'parent'=>$parent_ID] );
     }
 
+    public static function term_by(string $field,string $value,string $taxonomy):null|int
+    {
+        if(false === ($query = get_term_by( $field, $value,$taxonomy)))
+            return null;
+        return $query->term_id;
+
+    }
+
     public static function posts_by_term_id(int $term_id,string $taxonomy_slug,string $post_type,$limit=-1,$fields = null):null|array
     {
                 return get_posts(

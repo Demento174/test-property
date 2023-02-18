@@ -41,11 +41,7 @@ abstract class ATaxonomy{
 
         $this->description  = $this->term->description;
 
-        $this->link         = get_term_link((int)$this->id, $this->type );
-
-
-
-
+        $this->link         = $this->set_link((int)$this->id, $this->type );
 
     }
 
@@ -67,6 +63,11 @@ abstract class ATaxonomy{
             $result[] = new $className($item->term_id);
 
         return []===$result?null:$result;
+    }
+
+    protected function set_link(int $ID, $type):string
+    {
+        return get_term_link($ID, $type );
     }
 
 
